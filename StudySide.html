@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudySide</title>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <link rel="stylesheet" href="StudySide.css">
+</head>
+<body>
+  
+  <header>
+    <h1 id="logo">StudySide</h1>
+  </header>
+
+  <main id="app">
+
+  </main>
+
+  <div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+
+    <input id="modalInput" type="text">
+
+    <div class="modal-buttons">
+      <button onclick="closeModal()">キャンセル</button>
+      <button id="confirmBtn" onclick="confirmModal()">
+  追加
+</button>
+    </div>
+  </div>
+</div>
+
+<div id="imageViewer" class="modal hidden">
+  <div class="modal-content">
+
+    <img id="viewerImg" />
+
+    <div class="modal-buttons">
+      <button onclick="closeImageViewer()">閉じる</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="StudySide.js"></script>
+
+</body>
+</html>

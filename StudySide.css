@@ -1,0 +1,514 @@
+/* ==========================================================================
+   1. リセット & 基本設定
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f5f5;
+  color: #333333;
+  font-family: "Segoe UI", "Hiragino Sans", "Meiryo", sans-serif;
+}
+
+header {
+  padding: 20px 32px;
+}
+
+#logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4a7dff;
+  user-select: none;
+}
+
+#app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ==========================================================================
+   2. レイアウト & パンくず
+   ========================================================================== */
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.note-title-text {
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.page-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.page-breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  user-select: none;
+  position: relative;
+  top: -8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.parent-note-title { color: #666666; }
+.breadcrumb-separator { margin: 0 8px; color: #999999; font-size: 0.9rem; }
+.current-page-title { color: #111111; font-weight: 800; }
+#saveStatus { color: #777; font-size: 0.9rem; }
+
+/* ==========================================================================
+   3. ボタン共通デザイン
+   ========================================================================== */
+button {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.primary-btn {
+  background-color: #4a7dff;
+  color: #ffffff;
+  border-radius: 12px;
+  height: 56px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 20px; 
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.primary-btn:hover {
+  background-color: #0056b3; 
+  transform: translateY(-1px); 
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.primary-btn.back-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   4. カードデザイン (ノート・ページ一覧)
+   ========================================================================== */
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  border-color: #b0bec5;
+  background-color: #fcfcfc;
+  transform: translateY(-1px);
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333333;
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  color: #757575;
+  margin: 0;
+  margin-right: auto; 
+}
+
+.card button {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  transition: all 0.2s;
+}
+
+.card button:hover {
+  background: #f0f0f0;
+  border-color: #b0bec5;
+}
+
+/* ==========================================================================
+   5. ツールバー & 記号入力
+   ========================================================================== */
+.toolbar {
+  position: sticky; 
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0; 
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  z-index: 100;
+  margin-bottom: 20px;
+}
+
+.toolbar-buttons {
+  display: flex;
+  gap: 10px; 
+  margin-left: 0; 
+}
+
+.toolbar button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.toolbar button:hover {
+  background: #f0f0f0;
+}
+
+.toolbar-buttons button.active-tool {
+  background-color: #4a7dff !important;
+  color: #ffffff !important;
+  border-color: #3b66d4 !important;
+}
+
+.symbol-group {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+#symbolInput {
+  width: 80px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 8px 0;
+  font-size: 0.85rem;
+}
+
+.symbol-group button:nth-of-type(1) {
+  border-radius: 0;
+  border-right: none;
+}
+
+.symbol-group button:nth-of-type(2) {
+  border-radius: 0 8px 8px 0;
+}
+
+/* ==========================================================================
+   6. Quill エディタ & 装飾スタイル
+   ========================================================================== */
+/* 1. エディタ全体を包む外枠（画面いっぱいの高さを確保） */
+.editor-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fff;
+  
+  /* 👈 画面の高さに合わせた巨大なノート枠にする設定 */
+  min-height: calc(100vh - 180px); /* 画面全体の高さからヘッダー分などを引いた大きさ */
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 2. Quill内部の不要な枠線を消去 */
+.ql-container.ql-snow {
+  border: none !important;
+  flex: 1; /* 親要素（editor-container）の高さいっぱいまで引き伸ばす */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3. 書き込みエリア（下部に大きなスクロール余白を確保） */
+.ql-editor {
+  flex: 1; /* エディタ内を画面下まで全開に広げる */
+  
+  /* 👈 下部に画面幅の半分（50vh）の余白を作って、常に画面上部で書けるようにする */
+  padding: 16px 24px 60vh 24px !important; 
+  
+  /* 📓 薄い横罫線 (#f2f2f2) をエリア全体にリピート配置 */
+  background-image: linear-gradient(transparent 96%, #f2f2f2 100%);
+  background-size: 100% 32px;
+  background-repeat: repeat-y;
+  
+  /* ✏️ 文字の高さを線にピッタリ乗せる */
+  font-size: 15px !important;
+  line-height: 32px !important;
+  padding-top: 2px !important;
+  
+  color: #333;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+/* 4. H2見出し設定 */
+.ql-editor h2 {
+  font-size: 1.4rem !important;
+  font-weight: bold;
+  color: #111;
+  line-height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 画像 位置を確実に上へ持ち上げる修正 */
+.ql-editor .image-icon-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* 👈 vertical-align と relative を組み合わせて位置を確実に調整 */
+  position: relative;
+  top: -3px;                    /* マイナスの値で上に引っ張り上げます（-2px〜-5pxで微調整可） */
+  vertical-align: middle;
+  
+  height: 28px;
+  line-height: 1;
+  padding: 0 10px;
+  margin: 0 4px;
+  background-color: #eef5ff;
+  color: #0056b3;
+  border: 1px solid #b8daff;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ql-editor .image-icon-tag:hover {
+  background-color: #d6e4ff;
+  border-color: #80b3ff;
+}
+
+/* ==========================================================================
+   7. 浮動ボタン & 目次
+   ========================================================================== */
+.floating-controls {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 999;
+}
+
+.float-btn {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.float-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.toc-menu {
+  position: absolute;
+  bottom: 48px;
+  right: 0;
+  width: 220px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 8px 0;
+}
+
+.toc-menu.hidden { display: none; }
+
+.toc-item {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toc-item:hover {
+  background: #f5f5f5;
+  color: #007bff;
+}
+
+.toc-item.empty {
+  color: #999;
+  font-style: italic;
+  cursor: default;
+}
+
+/* ==========================================================================
+   8. モーダル & 画像ビューアー
+   ========================================================================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.hidden, #imageViewer.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#modalTitle {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 24px;
+}
+
+.modal-content input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#modalInput:focus {
+  border-color: #007bff;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 42px;
+  margin-top: 24px;
+}
+
+.modal-buttons button {
+  width: 130px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.modal-buttons button:nth-of-type(1) {
+  background: #e0e0e0;
+  color: #333333;
+  border: 1px solid #cccccc;
+}
+
+.modal-buttons button:nth-of-type(1):hover { background: #d5d5d5; }
+
+.modal-buttons button:nth-of-type(2) {
+  background: #4a7dff;
+  color: #ffffff;
+}
+
+.modal-buttons button:nth-of-type(2):hover { background: #0056b3; }
+
+.modal-has-input #confirmBtn { opacity: 0.5; }
+
+#confirmBtn.active {
+  opacity: 1;
+  transform: scale(1.03);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+}
+
+/* ==========================================================================
+   🖼️ 画像プレビューモーダル（画面いっぱい拡大版）
+   ========================================================================== */
+/* モーダルの枠を限界まで広げる */
+.modal.modal-image-preview .modal-content {
+  width: auto !important;
+  max-width: 95vw !important;     /* 画面横幅の95%まで許可 */
+  max-height: 95vh !important;    /* 画面高さの95%まで許可 */
+  padding: 12px !important;       /* パディングを縮めて画像をより大きく */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+}
+
+/* 画像とボタンを包むコンテナ */
+#imagePreviewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 🖼️ 画像本体：画面いっぱいにダイナミック表示 */
+.preview-large-img {
+  max-width: 90vw;                /* 画面横幅の90% */
+  max-height: 85vh;               /* 画面高さの85%（下にボタンを置くスペースを考慮） */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+}
+
+/* 🔘 画像の直下中央に配置するボタン */
+.image-preview-btn-area {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
