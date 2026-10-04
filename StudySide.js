@@ -50,17 +50,105 @@ ImageIconBlot.tagName = 'span';
 ImageIconBlot.className = 'image-icon-tag';
 Quill.register(ImageIconBlot);
 
-// 仮データ
+// 初期データ
 let notes = JSON.parse(localStorage.getItem("notes")) || [
   {
     id: 1,
     title: "世界史",
     pages: [
       {
-        id: 1,
+        id: 101,
         title: "ローマ帝国の拡大",
-        updatedAt: "2026/06/12 18:20",
-        content: "<h2>ローマ帝国の拡大</h2><p>ポエニ戦争によって地中海の覇権を握ったローマは、<span style=\"background-color: rgb(255, 245, 157);\">領土を大幅に拡大</span>させた。</p>"
+        updatedAt: "2026/10/04 18:20",
+        content: `
+          <h2>ローマ帝国の拡大</h2>
+          <p>ポエニ戦争によって<span style="background-color: rgb(255, 245, 157);">地中海の覇権</span>を握ったローマは、その後さらに領土を大幅に拡大させていった。</p>
+          <p><br></p>
+          <p>✔ <strong>ポエニ戦争</strong></p>
+          <p>→ ローマ vs カルタゴの戦い</p>
+          <p>→ ローマが勝利し、地中海西部の勢力を確立</p>
+          <p><br></p>
+          <p>📷 <strong>ローマ帝国の最大領域</strong></p>
+          <p>地中海を中心に広がったローマ帝国の領域：
+             <span class="image-icon-tag" contenteditable="false" data-src="images/roman-empire-map.png">🖼️ 画像</span></p>
+          <p><br></p>
+          <h2>ローマ街道の役割（豆知識）</h2>
+          <p>「すべての道はローマに通ず」と言われるように、整備されたローマ街道は軍隊の移動だけでなく、<span style="background-color: rgb(255, 245, 157);">物資の輸送や迅速な情報伝達</span>にも大きく貢献した。</p>
+        `
+      },
+      {
+        id: 102,
+        title: "フランス革命",
+        updatedAt: "2026/10/03 14:10",
+        content: `
+          <h2>フランス革命と人権宣言</h2>
+          <p>1789年、絶対王政に対する市民の不満が爆発し、バスティーユ牢獄の襲撃によって革命が勃発した。</p>
+          <p><br></p>
+          <p>✔ <strong>旧制度（アンシャン・レジーム）の矛盾</strong></p>
+          <p>→ 第一身分（聖職者）・第二身分（貴族）は免税特権</p>
+          <p>→ 第三身分（平民）のみが重税を負担</p>
+          <p><br></p>
+          <p>✔ <strong>人権宣言の採択</strong></p>
+          <p>→ <span style="background-color: rgb(255, 245, 157);">自由・平等・主権在民</span>を主張</p>
+        `
+      },
+      {
+        id: 103,
+        title: "産業革命",
+        updatedAt: "2026/09/28 11:45",
+        content: `
+          <h2>イギリスで始まった産業革命</h2>
+          <p>18世紀後半、イギリスで蒸気機関の発明とともに工業化が急速に進んだ。</p>
+          <p><br></p>
+          <p>✔ <strong>なぜイギリスで起きたのか？</strong></p>
+          <p>→ 豊富な石炭・鉄鉱石の資源</p>
+          <p>→ 資本の蓄積と広い植民地市場</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "英語",
+    pages: [
+      {
+        id: 201,
+        title: "Lesson 1",
+        updatedAt: "2026/10/01 09:30",
+        content: `
+          <h2>Key Phrases</h2>
+          <p>✔ <strong>Important Expressions</strong></p>
+          <p>→ <span style="background-color: rgb(255, 245, 157);">look forward to + V-ing</span> （〜するのを楽しみに待つ）</p>
+          <p>→ I am looking forward to seeing you.</p>
+        `
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "StudySide",
+    pages: [
+      {
+        id: 301,
+        title: "基本的な使い方",
+        updatedAt: "2026/10/04 19:00",
+        content: `
+          <h2>StudySideへようこそ！</h2>
+          <p>StudySideは、動画授業やオンライン講義を受けながらサクサク効率的にノートを整理できるWebアプリです。</p>
+          <p><br></p>
+          <p>✔ <strong>【1】ノート＆ページの管理</strong></p>
+          <p>→ 科目ごとの「ノート」を作成し、その中に「授業ページ」を追加できます。</p>
+          <p><br></p>
+          <p>✔ <strong>【2】画像のクリップボード貼り付け</strong></p>
+          <p>→ 授業画面のスクリーンショットをコピーして <span style="background-color: rgb(255, 245, 157);">Ctrl + V</span> で貼り付けると、ノート上で場所をとらない「画像アイコン」として挿入されます。</p>
+          <p><br></p>
+          <p>✔ <strong>【3】ショートカット＆記号</strong></p>
+          <p>→ ツールバーの記号ボタンをクリックして簡単に挿入できます。</p>
+          <p>→ マーカー（Ctrl + M）、見出し（Ctrl + H）などのショートカットも利用可能です。</p>
+          <p><br></p>
+          <p>✔ <strong>【4】リアルタイム自動保存</strong></p>
+          <p>→ 入力したデータはブラウザ（LocalStorage）へ即座に自動保存されます。</p>
+        `
       }
     ]
   }
